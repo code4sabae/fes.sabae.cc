@@ -15,12 +15,21 @@
 <div class=date>2024/9/21土-22日</div>
 
 <div class=divimgs>
-  <a target=_blank href=https://www.instagram.com/meganefes/><img src=meganefes.jpg></a>
-  <a target=_blank href=https://www.instagram.com/sabae_sdgsfes/><img src=sdgsfes.jpg></a>
-  <a target=_blank href=https://www.instagram.com/sabaemonzenmatsuri/><img src=monzenfes.jpg></a>
+  <a target=_blank href=https://www.instagram.com/sabae_sdgsfes/><img src=sdgsfes.jpg title=めがねのまちさばえSDGsフェス></a>
+  <a target=_blank href=https://www.instagram.com/sabaemonzenmatsuri/><img src=monzenfes.jpg title=さばえ門前まつり></a>
+  <a target=_blank href=https://www.instagram.com/meganefes/><img src=meganefes.jpg title=めがねフェス></a>
 </div>
 
 <div class=footer>熱い、さばえの2日間</div>
+
+<script type="module" src="https://js.sabae.cc/csv-map.js"></script>
+<csv-map src="./index.csv" grayscale=true></csv-map>
+
+<!--
+<script type="module" src="https://code4sabae.github.io/js/csv-viewer.js"></script>
+<csv-viewer id=csvbooth></csv-viewer>
+-->
+<div id=divbooth></div>
 
 <div class=codefor><div>さばえ3大まつりをPRしよう！</div>
 <script type="module" src="https://js.sabae.cc/QRCode.js"></script>
@@ -30,6 +39,35 @@ website by <a href=https://github.com/code4sabae/fes.sabae.cc/>Code for Sabae</a
 </div>
 
 <script type="module">
+import { CSV } from "https://code4fukui.github.io/CSV/CSV.js";
+import { shuffle } from "https://js.sabae.cc/shuffle.js";
+import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
+
+const index = await CSV.fetchJSON("./index.csv");
+const list = [];
+for (const item of index) {
+  const booth = await CSV.fetchJSON(item.booth);
+  //console.log(booth, item);
+  booth.forEach(i => {
+    i.fes = item.name;
+    list.push(i)
+  });
+}
+//csvbooth.value = list;
+const types = ArrayUtil.toUnique(list.map(i => i.type));
+for (const type of types) {
+  const div = document.createElement("div");
+  divbooth.appendChild(div);
+  const h3 = document.createElement("h3");
+  h3.textContent = type;
+  div.appendChild(h3);
+  const list2 = list.filter(i => i.type == type);
+  shuffle(list2);
+  const div2 = document.createElement("div");
+  div2.textContent = list2.map(i => i.name).join(" / ");
+  div.appendChild(div2);
+}
+
 inurl.onclick = () => {
   inurl.select();
   document.execCommand("copy");
@@ -39,7 +77,9 @@ inurl.onclick = () => {
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
 body {
-  margin: 5vh 0;
+  margin: 1vh 0;
+  /* */
+  margin: 1vh;
   padding: 0;
   text-align: center;
   background-color: #222;
@@ -58,16 +98,22 @@ h1 {
 }
 .footer {
   font-size: 9vw;
-  margin: 0;
+  margin: 2vw;
   padding: 0;
 }
 .divimgs {
   display: inline-grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 5vw 0;
+  margin: 2vw 0;
 }
 .divimgs img {
   width: 100%;
+}
+#divbooth {
+  margin: 2vw .5em;
+}
+csv-map > div {
+  height: 50vw !important;
 }
 .codefor {
   margin-top: 5vw;
@@ -80,7 +126,7 @@ h1 {
   padding: .3em;
   font-size: 110%;
 }
-a {
+.codefor a {
   color: white !important;
 }
 </style>
