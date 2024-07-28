@@ -1,10 +1,10 @@
 # fes.sabae.cc
 
-- [さばえ3大まつり](https://fes.sabae.cc/)
+- [さばえ3大フェス](https://fes.sabae.cc/)
 
 ## オープンデータ
 
-- [さばえ3大まつりオープンデータ](index.csv)
+- [さばえ3大フェスオープンデータ](index.csv)
 - [めがねフェス出展オープンデータ](meganefes.csv)
 - [さばえ門前まつり出展オープンデータ](monzenfes.csv)
 - [めがねのまちさばえSDGsフェスオープンデータ](sdgsfes.csv)
