@@ -2,10 +2,10 @@
 
 ## オープンデータ
 
-- [index.csv](さばえ3大まつりオープンデータ)
-- [meganefes.csv](めがねフェス出展オープンデータ)
-- [monzenfes.csv](さばえ門前まつり出展オープンデータ)
-- [sdgsfes.csv](めがねのまちさばえSDGsフェスオープンデータ)
+- [さばえ3大まつりオープンデータ](index.csv)
+- [めがねフェス出展オープンデータ](meganefes.csv)
+- [さばえ門前まつり出展オープンデータ](monzenfes.csv)
+- [めがねのまちさばえSDGsフェスオープンデータ](sdgsfes.csv)
 
 ## GitHub Pages用、ドメイン設定
 
