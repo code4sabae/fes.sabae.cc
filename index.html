@@ -20,6 +20,9 @@
   <a target=_blank href=https://www.instagram.com/meganefes/><img src=meganefes.jpg title=めがねフェス></a>
 </div>
 
+<div id=divselbooth></div>
+<div id=divbooth></div>
+
 <div class=footer>熱い、さばえの2日間</div>
 
 <script type="module" src="https://js.sabae.cc/csv-map.js"></script>
@@ -30,7 +33,6 @@
 <script type="module" src="https://code4sabae.github.io/js/csv-viewer.js"></script>
 <csv-viewer id=csvbooth></csv-viewer>
 -->
-<div id=divbooth></div>
 
 <div class=codefor><div>さばえ3大フェスをPRしよう！</div>
 <script type="module" src="https://js.sabae.cc/QRCode.js"></script>
@@ -43,6 +45,7 @@ website by <a href=https://github.com/code4sabae/fes.sabae.cc/>Code for Sabae</a
 import { CSV } from "https://code4fukui.github.io/CSV/CSV.js";
 import { shuffle } from "https://js.sabae.cc/shuffle.js";
 import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
+import { cr } from "https://js.sabae.cc/cr.js";
 
 const index = await CSV.fetchJSON("./index.csv");
 const list = [];
@@ -54,21 +57,43 @@ for (const item of index) {
     i.fes = item.name;
     list.push(i)
   });
+
+  const lbl = cr("label", divselbooth);
+  const inp = cr("input", lbl);
+  inp.type = "checkbox";
+  inp.checked = true;
+  cr("span", lbl).textContent = item.name;
+  item.chk = inp;
 }
 //csvbooth.value = list;
-const types = ArrayUtil.toUnique(list.map(i => i.type));
-for (const type of types) {
-  const div = document.createElement("div");
-  divbooth.appendChild(div);
-  const h3 = document.createElement("h3");
-  h3.textContent = type;
-  div.appendChild(h3);
-  const list2 = list.filter(i => i.type == type);
-  shuffle(list2);
-  const div2 = document.createElement("div");
-  div2.innerHTML = list2.map(i => i.url ? `<a href=${i.url}>${i.name}</a>` : i.name).join(" / ");
-  div.appendChild(div2);
-}
+
+console.log(index, list)
+const show = () => {
+  divbooth.innerHTML = "";
+
+  const types = ArrayUtil.toUnique(list.map(i => i.type));
+  for (const type of types) {
+    const div = document.createElement("div");
+    divbooth.appendChild(div);
+    const h3 = document.createElement("h3");
+    h3.textContent = type;
+    div.appendChild(h3);
+    const list2 = list.filter(i => i.type == type).filter(i => index.find(j => j.name == i.fes).chk.checked);
+    /*
+    const list2 = list.filter(i => i.type == type).filter(i => index.find(j => {
+      console.log(j.name, i.fes)
+      return j.name == i.fes;
+    }).chk.checked);
+    */
+    shuffle(list2);
+    const div2 = document.createElement("div");
+    div2.innerHTML = list2.map(i => i.url ? `<a href=${i.url}>${i.name}</a>` : i.name).join(" / ");
+    div.appendChild(div2);
+  }
+};
+show();
+
+index.filter(i => i.chk).forEach(i => i.chk.onchange = () => show());
 
 inurl.onclick = () => {
   inurl.select();
@@ -113,6 +138,9 @@ h1 {
 }
 #divbooth {
   margin: 2vw .5em;
+}
+#divselbooth {
+  margin: 2vw 0 0 1vw;
 }
 csv-map > div {
   height: 50vw !important;
