@@ -23,7 +23,8 @@
 <div class=footer>熱い、さばえの2日間</div>
 
 <script type="module" src="https://js.sabae.cc/csv-map.js"></script>
-<csv-map src="./index.csv" grayscale=true></csv-map>
+<csv-map src="./index.csv" grayscale=true></csv-map><br>
+<a href=https://www.instagram.com/p/C_uArmPBi2o/>3会場と駐車場（サンドーム福井）を結ぶシャトルバス（夕方5時まで）</a>
 
 <!--
 <script type="module" src="https://code4sabae.github.io/js/csv-viewer.js"></script>
@@ -46,6 +47,7 @@ import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
 const index = await CSV.fetchJSON("./index.csv");
 const list = [];
 for (const item of index) {
+  if (!item.booth) continue;
   const booth = await CSV.fetchJSON(item.booth);
   //console.log(booth, item);
   booth.forEach(i => {
@@ -64,7 +66,7 @@ for (const type of types) {
   const list2 = list.filter(i => i.type == type);
   shuffle(list2);
   const div2 = document.createElement("div");
-  div2.textContent = list2.map(i => i.name).join(" / ");
+  div2.innerHTML = list2.map(i => i.url ? `<a href=${i.url}>${i.name}</a>` : i.name).join(" / ");
   div.appendChild(div2);
 }
 
@@ -115,6 +117,9 @@ h1 {
 csv-map > div {
   height: 50vw !important;
 }
+csv-map a {
+  color: black !important;
+}
 .codefor {
   margin-top: 5vw;
 }
@@ -126,7 +131,7 @@ csv-map > div {
   padding: .3em;
   font-size: 110%;
 }
-.codefor a {
+a {
   color: white !important;
 }
 </style>
