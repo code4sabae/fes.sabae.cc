@@ -67,7 +67,6 @@ for (const item of index) {
 }
 //csvbooth.value = list;
 
-console.log(index, list)
 const show = () => {
   divbooth.innerHTML = "";
 
@@ -79,12 +78,6 @@ const show = () => {
     h3.textContent = type;
     div.appendChild(h3);
     const list2 = list.filter(i => i.type == type).filter(i => index.find(j => j.name == i.fes).chk.checked);
-    /*
-    const list2 = list.filter(i => i.type == type).filter(i => index.find(j => {
-      console.log(j.name, i.fes)
-      return j.name == i.fes;
-    }).chk.checked);
-    */
     shuffle(list2);
     const div2 = document.createElement("div");
     div2.innerHTML = list2.map(i => i.url ? `<a href=${i.url}>${i.name}</a>` : i.name).join(" / ");
